@@ -15,9 +15,23 @@ PLATFORMS = [
 SPAWNS = [(200, 330), (600, 330), (100, 210), (700, 210), (150, 450), (650, 450), (400, 330), (60, 570)]
 
 
+def _lerp_color(a, b, t):
+    """Blend colour a into colour b; t=0 gives a, t=1 gives b."""
+    t = max(0.0, min(1.0, t))
+    return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
+
+
 def bubble_tint(bubble):
     """Return an (r, g, b) colour for a bubble, or None for the default."""
-    pass
+    if bubble.enemy is None:
+        # Empty bubbles can only trap while young (see trap_enemies), so fade
+        # them from bright cyan to dull blue-grey as that window closes.
+        return _lerp_color((120, 230, 255), (90, 110, 140), bubble.age / 1.5)
+    # Trapped bubbles count down bubble.life: fade pink -> red as the enemy
+    # gets closer to escaping, and flash white for the final 2 seconds.
+    if bubble.life < 2.0 and int(bubble.life * 8) % 2 == 0:
+        return (255, 255, 255)
+    return _lerp_color((255, 190, 230), (255, 50, 50), 1 - bubble.life / BUBBLE_LIFE)
 
 
 def on_fruit_collected(fruit):
