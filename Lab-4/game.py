@@ -61,9 +61,12 @@ def update_fruit_fx(dt):
     fruit_fx["popups"] = [p for p in fruit_fx["popups"] if p[2] > 0]
 
 
+BONUS_LIFE_EVERY = 5000
+
+
 def bonus_life_threshold():
     """Return a score value at which the player earns an extra life, or None to disable bonus lives."""
-    pass
+    return BONUS_LIFE_EVERY
 
 
 class Body:
