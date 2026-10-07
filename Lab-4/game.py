@@ -150,7 +150,7 @@ class Game:
         if bubble.enemy or bubble.age >= 1.5:
             return
         for enemy in self.enemies:
-            if bubble.pos.distance_squared_to(enemy.center) < 24 * 2:
+            if bubble.pos.distance_squared_to(enemy.center) < 24 ** 2:
                 self.enemies.remove(enemy)
                 bubble.enemy, bubble.vel.x = enemy, bubble.vel.x * 0.2
                 return
