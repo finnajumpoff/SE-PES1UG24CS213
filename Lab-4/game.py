@@ -34,9 +34,31 @@ def bubble_tint(bubble):
     return _lerp_color((255, 190, 230), (255, 50, 50), 1 - bubble.life / BUBBLE_LIFE)
 
 
+# The hook functions live outside Game, so fruit effects keep their own state here.
+# Game.update moves them, Game.draw renders them, Game.reset clears them.
+fruit_fx = {"count": 0, "sparkles": [], "popups": []}
+
+
 def on_fruit_collected(fruit):
     """Called when the player picks up a fruit; add a sound, sparkle, or bonus effect here."""
-    pass
+    fruit_fx["count"] += 1
+    origin = fruit.center
+    for _ in range(14):
+        velocity = pygame.Vector2(random.uniform(60, 180), 0).rotate(random.uniform(0, 360))
+        fruit_fx["sparkles"].append([pygame.Vector2(origin), velocity, 0.5])
+    fruit_fx["popups"].append([pygame.Vector2(origin), f"+{fruit.value}", 0.8])
+
+
+def update_fruit_fx(dt):
+    """Move sparkles outward and float score popups upward, dropping expired ones."""
+    for spark in fruit_fx["sparkles"]:
+        spark[0] += spark[1] * dt
+        spark[2] -= dt
+    for popup in fruit_fx["popups"]:
+        popup[0].y -= 40 * dt
+        popup[2] -= dt
+    fruit_fx["sparkles"] = [s for s in fruit_fx["sparkles"] if s[2] > 0]
+    fruit_fx["popups"] = [p for p in fruit_fx["popups"] if p[2] > 0]
 
 
 def bonus_life_threshold():
@@ -145,6 +167,9 @@ class Game:
     def reset(self):
         self.level, self.score, self.lives, self.combo, self.state = 1, 0, 3, 0, "play"
         self.bonus_awarded = 0
+        fruit_fx["count"] = 0
+        fruit_fx["sparkles"].clear()
+        fruit_fx["popups"].clear()
         self.player = Player()
         self.fruits = []
         self.start_level()
@@ -209,6 +234,7 @@ class Game:
                 self.release(bubble)
             elif bubble.pos.y < -bubble.radius:
                 self.bubbles.remove(bubble)
+        update_fruit_fx(dt)
         for fruit in self.fruits[:]:
             fruit.update(dt)
             if fruit.rect.colliderect(player.rect):
@@ -246,12 +272,17 @@ class Game:
                 pygame.draw.circle(screen, (240, 160, 50), bubble.pos, 9)
             color = bubble_tint(bubble) or ((120, 230, 255) if bubble.enemy is None else (255, 190, 230))
             pygame.draw.circle(screen, color, bubble.pos, bubble.radius, 2)
+        for pos, _, life in fruit_fx["sparkles"]:
+            pygame.draw.circle(screen, (255, 230, 120), pos, max(1, int(life * 6)))
+        for pos, text, _ in fruit_fx["popups"]:
+            label = self.font.render(text, True, (255, 240, 150))
+            screen.blit(label, label.get_rect(center=pos))
         player = self.player
         if player.invulnerable <= 0 or int(player.invulnerable * 10) % 2 == 0:
             pygame.draw.rect(screen, (70, 210, 110), player.rect, border_radius=8)
             eye = player.center + (player.facing * 6, -4)
             pygame.draw.circle(screen, (255, 255, 255), eye, 4)
-        hud = self.font.render(f"Score {self.score}  Lives {self.lives}  Level {self.level}  R = reset", True, (240, 240, 240))
+        hud = self.font.render(f"Score {self.score}  Lives {self.lives}  Level {self.level}  Fruits {fruit_fx['count']}  R = reset", True, (240, 240, 240))
         screen.blit(hud, (10, 8))
         if self.state == "lose":
             label = self.font.render("GAME OVER - Press R", True, (255, 255, 120))
