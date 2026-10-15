@@ -1,0 +1,7 @@
+dairy_collection.py:2:1: F401 'json' imported but unused
+dairy_collection.py:7:80: E501 line too long (104 > 79 characters)
+dairy_collection.py:11:80: E501 line too long (124 > 79 characters)
+dairy_collection.py:20:80: E501 line too long (83 > 79 characters)
+dairy_collection.py:25:80: E501 line too long (90 > 79 characters)
+dairy_collection.py:26:5: E741 ambiguous variable name 'l'
+dairy_collection.py:36:41: E711 comparison to None should be 'if cond is None:'

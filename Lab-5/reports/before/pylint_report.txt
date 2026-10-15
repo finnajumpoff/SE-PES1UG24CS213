@@ -1,0 +1,29 @@
+************* Module dairy_collection
+dairy_collection.py:7:0: C0301: Line too long (104/100) (line-too-long)
+dairy_collection.py:11:0: C0301: Line too long (124/100) (line-too-long)
+dairy_collection.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+dairy_collection.py:10:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:10:0: C0103: Function name "recordMilk" doesn't conform to snake_case naming style (invalid-name)
+dairy_collection.py:10:15: W0621: Redefining name 'conn' from outer scope (line 6) (redefined-outer-name)
+dairy_collection.py:11:17: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+dairy_collection.py:15:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:15:0: C0103: Function name "farmerToken" doesn't conform to snake_case naming style (invalid-name)
+dairy_collection.py:19:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:19:0: C0103: Function name "dailyTotal" doesn't conform to snake_case naming style (invalid-name)
+dairy_collection.py:19:15: W0621: Redefining name 'conn' from outer scope (line 6) (redefined-outer-name)
+dairy_collection.py:21:11: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+dairy_collection.py:24:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:24:0: C0103: Function name "topFarmer" doesn't conform to snake_case naming style (invalid-name)
+dairy_collection.py:24:14: W0621: Redefining name 'conn' from outer scope (line 6) (redefined-outer-name)
+dairy_collection.py:30:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:30:0: C0103: Function name "printSlip" doesn't conform to snake_case naming style (invalid-name)
+dairy_collection.py:34:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:34:0: C0103: Function name "lowFat" doesn't conform to snake_case naming style (invalid-name)
+dairy_collection.py:34:11: W0621: Redefining name 'conn' from outer scope (line 6) (redefined-outer-name)
+dairy_collection.py:36:36: C0121: Comparison 'fat == None' should be 'fat is None' (singleton-comparison)
+dairy_collection.py:39:0: C0116: Missing function or method docstring (missing-function-docstring)
+dairy_collection.py:2:0: W0611: Unused import json (unused-import)
+
+-----------------------------------
+Your code has been rated at 2.00/10
+
