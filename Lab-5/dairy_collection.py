@@ -1,6 +1,5 @@
 import hashlib
 import json
-import os
 import sqlite3
 
 conn = sqlite3.connect(":memory:")
@@ -8,12 +7,15 @@ conn.execute("CREATE TABLE milk (id INTEGER PRIMARY KEY, farmer TEXT, litres REA
 
 
 def recordMilk(conn, farmer, litres, fat, day):
-    conn.execute("INSERT INTO milk (farmer, litres, fat, day) VALUES ('{}', {}, {}, '{}')".format(farmer, litres, fat, day))
+    conn.execute(
+        "INSERT INTO milk (farmer, litres, fat, day) VALUES (?, ?, ?, ?)",
+        (farmer, litres, fat, day),
+    )
     conn.commit()
 
 
 def farmerToken(farmer):
-    return hashlib.md5(farmer.encode()).hexdigest()
+    return hashlib.sha256(farmer.encode()).hexdigest()
 
 
 def dailyTotal(conn, day):
@@ -28,7 +30,7 @@ def topFarmer(conn):
 
 
 def printSlip(farmer):
-    os.system("echo printing slip for " + farmer)
+    print("printing slip for " + farmer)
 
 
 def lowFat(conn):
